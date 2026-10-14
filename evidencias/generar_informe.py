@@ -2,6 +2,7 @@ from pathlib import Path
 import subprocess
 from xml.sax.saxutils import escape
 
+from PIL import Image as PillowImage, ImageDraw, ImageFont
 from reportlab.lib import colors
 from reportlab.lib.enums import TA_CENTER
 from reportlab.lib.pagesizes import A4
@@ -22,6 +23,7 @@ from reportlab.platypus import (
 EVIDENCE_DIR = Path(__file__).resolve().parent
 PROJECT_DIR = EVIDENCE_DIR.parent
 REPORT_PATH = EVIDENCE_DIR / "Informe.pdf"
+TEST_IMAGE_PATH = EVIDENCE_DIR / "salida_casos.png"
 REPOSITORY_URL = "https://github.com/fercho123909/T6-ArbolBinario-FernandoVillacres"
 TEST_OUTPUT_PATH = EVIDENCE_DIR / "salida_casos.txt"
 SOURCE_FILES = [
@@ -63,7 +65,31 @@ def make_table(rows, widths):
     return table
 
 
+def render_test_transcript():
+    if not TEST_OUTPUT_PATH.exists():
+        return False
+
+    lines = TEST_OUTPUT_PATH.read_text(encoding="utf-8-sig").strip().splitlines()
+    font = ImageFont.truetype(r"C:\Windows\Fonts\consola.ttf", 26)
+    title_font = ImageFont.truetype(r"C:\Windows\Fonts\consola.ttf", 25)
+    padding = 30
+    line_height = 40
+    image_width = 1580
+    image_height = 88 + line_height * len(lines) + padding
+    image = PillowImage.new("RGB", (image_width, image_height), "#101820")
+    draw = ImageDraw.Draw(image)
+    draw.rectangle((0, 0, image_width, 58), fill="#183B56")
+    draw.text((padding, 12), "SALIDA REAL DE LAS PRUEBAS AUTOMATIZADAS", font=title_font, fill="#FFFFFF")
+
+    for index, line in enumerate(lines):
+        draw.text((padding, 72 + index * line_height), line, font=font, fill="#E7F0F2")
+
+    image.save(TEST_IMAGE_PATH)
+    return True
+
+
 def build_report():
+    has_test_image = render_test_transcript()
     styles = getSampleStyleSheet()
     styles.add(
         ParagraphStyle(
@@ -244,6 +270,14 @@ def build_report():
     story.extend([PageBreak(), Paragraph("Evidencia 2. Casos de prueba", styles["Section"])])
     if TEST_OUTPUT_PATH.exists():
         test_output = TEST_OUTPUT_PATH.read_text(encoding="utf-8-sig")
+        if has_test_image:
+            story.append(Image(str(TEST_IMAGE_PATH), width=170 * mm, height=55 * mm, kind="proportional"))
+            story.append(
+                Paragraph(
+                    "Vista visual preparada desde la transcripción real de la ejecución; no es una captura directa de pantalla.",
+                    styles["BodySpanish"],
+                )
+            )
         story.append(Preformatted(test_output, styles["CodeTree"], maxLineLength=110))
         story.append(Paragraph("Transcripción guardada directamente desde la ejecución del ejecutor automatizado.", styles["BodySpanish"]))
         story.append(Paragraph("Para una captura de pantalla adicional, ejecuto evidencias/demo_pruebas.cmd y guardo la ventana antes de cerrarla.", styles["BodySpanish"]))

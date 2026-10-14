@@ -102,12 +102,13 @@ Para mantener el árbol correcto, conviene probar siempre el árbol vacío y el 
 
 - [Captura del menú y el árbol](evidencias/captura_ejecucion.png)
 - [Salida real de los cinco casos obligatorios](evidencias/salida_casos.txt)
+- [Vista visual de la salida de pruebas](evidencias/salida_casos.png), generada desde la transcripción real; no es una captura directa.
 - [Script para volver a ejecutar los cinco casos](evidencias/demo_pruebas.cmd)
 - [Salida de consola completa](evidencias/salida_consola.txt)
 - [Informe para entregar](evidencias/Informe.pdf)
 - [Código que genera el informe](evidencias/generar_informe.py)
 
-Para tomar una captura de pantalla adicional de los cinco casos, ejecuto `evidencias/demo_pruebas.cmd` y guardo la imagen de la ventana antes de cerrarla. El archivo `salida_casos.txt` conserva mientras tanto el resultado completo de la ejecución real.
+Para volver a ejecutar los cinco casos uso `evidencias/demo_pruebas.cmd`. El archivo `salida_casos.txt` conserva el resultado completo de la ejecución, y el informe también incluye una vista visual claramente identificada como generada desde esa transcripción.
 
 ## Referencias
 
