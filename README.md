@@ -101,6 +101,7 @@ Para mantener el árbol correcto, conviene probar siempre el árbol vacío y el 
 ## Evidencias de esta ejecución
 
 - [Captura del menú y el árbol](evidencias/captura_ejecucion.png)
+- Captura directa de los cinco casos: pendiente de tomar desde la consola y guardar como `evidencias/captura_casos.png`.
 - [Salida real de los cinco casos obligatorios](evidencias/salida_casos.txt)
 - [Vista visual de la salida de pruebas](evidencias/salida_casos.png), generada desde la transcripción real; no es una captura directa.
 - [Script para volver a ejecutar los cinco casos](evidencias/demo_pruebas.cmd)
@@ -109,7 +110,7 @@ Para mantener el árbol correcto, conviene probar siempre el árbol vacío y el 
 - [Código que genera el informe](evidencias/generar_informe.py)
 - [Logotipo institucional usado en el informe](evidencias/logo_uta.png)
 
-Para volver a ejecutar los cinco casos uso `evidencias/demo_pruebas.cmd`. El archivo `salida_casos.txt` conserva el resultado completo de la ejecución, y el informe también incluye una vista visual claramente identificada como generada desde esa transcripción.
+Para obtener una captura genuina, ejecuto `evidencias/demo_pruebas.cmd`, tomo la ventana visible con `Win + Shift + S` y guardo el recorte como `evidencias/captura_casos.png`. Después regenero el PDF con `python evidencias/generar_informe.py`; si existe esa captura, el informe la prefiere a la vista generada desde la transcripción.
 
 ## Referencias
 

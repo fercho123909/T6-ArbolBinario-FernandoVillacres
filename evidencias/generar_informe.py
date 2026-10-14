@@ -26,6 +26,7 @@ EVIDENCE_DIR = Path(__file__).resolve().parent
 PROJECT_DIR = EVIDENCE_DIR.parent
 REPORT_PATH = EVIDENCE_DIR / "Informe.pdf"
 TEST_IMAGE_PATH = EVIDENCE_DIR / "salida_casos.png"
+TEST_SCREENSHOT_PATH = EVIDENCE_DIR / "captura_casos.png"
 LOGO_PATH = EVIDENCE_DIR / "logo_uta.png"
 REPOSITORY_URL = "https://github.com/fercho123909/T6-ArbolBinario-FernandoVillacres"
 TEST_OUTPUT_PATH = EVIDENCE_DIR / "salida_casos.txt"
@@ -307,7 +308,10 @@ def build_report():
     story.extend([PageBreak(), Paragraph("Evidencia 2. Casos de prueba", styles["Section"])])
     if TEST_OUTPUT_PATH.exists():
         test_output = TEST_OUTPUT_PATH.read_text(encoding="utf-8-sig")
-        if has_test_image:
+        if TEST_SCREENSHOT_PATH.exists():
+            story.append(Image(str(TEST_SCREENSHOT_PATH), width=170 * mm, height=95 * mm, kind="proportional"))
+            story.append(Paragraph("Captura directa de la ventana de consola durante la ejecución de los cinco casos.", styles["BodySpanish"]))
+        elif has_test_image:
             story.append(Image(str(TEST_IMAGE_PATH), width=170 * mm, height=55 * mm, kind="proportional"))
             story.append(
                 Paragraph(
@@ -317,7 +321,8 @@ def build_report():
             )
         story.append(Preformatted(test_output, styles["CodeTree"], maxLineLength=110))
         story.append(Paragraph("Transcripción guardada directamente desde la ejecución del ejecutor automatizado.", styles["BodySpanish"]))
-        story.append(Paragraph("Para una captura de pantalla adicional, ejecuto evidencias/demo_pruebas.cmd y guardo la ventana antes de cerrarla.", styles["BodySpanish"]))
+        if not TEST_SCREENSHOT_PATH.exists():
+            story.append(Paragraph("Para agregar una captura genuina, guardo una imagen directa de la consola como evidencias/captura_casos.png y vuelvo a generar este PDF.", styles["BodySpanish"]))
     else:
         story.append(Paragraph("Todavía no se ha guardado la salida de las pruebas.", styles["BodySpanish"]))
 
