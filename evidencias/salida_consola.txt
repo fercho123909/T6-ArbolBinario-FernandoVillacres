@@ -1,0 +1,144 @@
+========== ORGANIZACIÓN DE DEPARTAMENTOS ==========
+1. Crear el árbol inicial
+2. Visualizar el árbol
+3. Consultar el número de nodos
+4. Consultar el número de hojas
+5. Consultar la altura
+6. Consultar el grado de un nodo
+7. Verificar si un nodo es hoja
+8. Salir
+9. Ejecutar casos de prueba obligatorios
+Seleccione una opción: Árbol inicial creado correctamente.
+
+========== ORGANIZACIÓN DE DEPARTAMENTOS ==========
+1. Crear el árbol inicial
+2. Visualizar el árbol
+3. Consultar el número de nodos
+4. Consultar el número de hojas
+5. Consultar la altura
+6. Consultar el grado de un nodo
+7. Verificar si un nodo es hoja
+8. Salir
+9. Ejecutar casos de prueba obligatorios
+Seleccione una opción: === ESTRUCTURA DEL ÁRBOL ===
+UNIVERSIDAD
+|-- [I] FISEI
+|   |-- [I] SOFTWARE
+|   |   |-- [I] NIVEL1
+|   |   `-- [D] NIVEL3
+|   `-- [D] TI
+`-- [D] DIDE
+    |-- [I] INVESTIGACIÓN
+    `-- [D] VINCULACIÓN
+
+========== ORGANIZACIÓN DE DEPARTAMENTOS ==========
+1. Crear el árbol inicial
+2. Visualizar el árbol
+3. Consultar el número de nodos
+4. Consultar el número de hojas
+5. Consultar la altura
+6. Consultar el grado de un nodo
+7. Verificar si un nodo es hoja
+8. Salir
+9. Ejecutar casos de prueba obligatorios
+Seleccione una opción: Cantidad de nodos: 9
+
+========== ORGANIZACIÓN DE DEPARTAMENTOS ==========
+1. Crear el árbol inicial
+2. Visualizar el árbol
+3. Consultar el número de nodos
+4. Consultar el número de hojas
+5. Consultar la altura
+6. Consultar el grado de un nodo
+7. Verificar si un nodo es hoja
+8. Salir
+9. Ejecutar casos de prueba obligatorios
+Seleccione una opción: Cantidad de hojas: 5
+
+========== ORGANIZACIÓN DE DEPARTAMENTOS ==========
+1. Crear el árbol inicial
+2. Visualizar el árbol
+3. Consultar el número de nodos
+4. Consultar el número de hojas
+5. Consultar la altura
+6. Consultar el grado de un nodo
+7. Verificar si un nodo es hoja
+8. Salir
+9. Ejecutar casos de prueba obligatorios
+Seleccione una opción: Altura en aristas: 3
+
+========== ORGANIZACIÓN DE DEPARTAMENTOS ==========
+1. Crear el árbol inicial
+2. Visualizar el árbol
+3. Consultar el número de nodos
+4. Consultar el número de hojas
+5. Consultar la altura
+6. Consultar el grado de un nodo
+7. Verificar si un nodo es hoja
+8. Salir
+9. Ejecutar casos de prueba obligatorios
+Seleccione una opción: Ingrese el nombre del nodo: El grado de 'FISEI' es: 2
+
+========== ORGANIZACIÓN DE DEPARTAMENTOS ==========
+1. Crear el árbol inicial
+2. Visualizar el árbol
+3. Consultar el número de nodos
+4. Consultar el número de hojas
+5. Consultar la altura
+6. Consultar el grado de un nodo
+7. Verificar si un nodo es hoja
+8. Salir
+9. Ejecutar casos de prueba obligatorios
+Seleccione una opción: Ingrese el nombre del nodo: 'TI' SÍ es una hoja.
+
+========== ORGANIZACIÓN DE DEPARTAMENTOS ==========
+1. Crear el árbol inicial
+2. Visualizar el árbol
+3. Consultar el número de nodos
+4. Consultar el número de hojas
+5. Consultar la altura
+6. Consultar el grado de un nodo
+7. Verificar si un nodo es hoja
+8. Salir
+9. Ejecutar casos de prueba obligatorios
+Seleccione una opción: === CASOS DE PRUEBA OBLIGATORIOS ===
+[Caso 1] Árbol vacío
+esVacio(): true
+nodos: 0 (esperado 0)
+altura: -1 (esperado -1)
+[Caso 2] Árbol con un solo nodo
+nodos: 1 (esperado 1)
+hojas: 1 (esperado 1)
+altura: 0 (esperado 0)
+[Caso 3] Árbol inicial
+UNIVERSIDAD
+|-- [I] FISEI
+|   |-- [I] SOFTWARE
+|   |   |-- [I] NIVEL1
+|   |   `-- [D] NIVEL3
+|   `-- [D] TI
+`-- [D] DIDE
+    |-- [I] INVESTIGACIÓN
+    `-- [D] VINCULACIÓN
+nodos: 9 (esperado 9)
+hojas: 5 (esperado 5)
+altura: 3 (esperado 3)
+[Caso 4] Intento de insertar un hijo en una posición ocupada
+Inserción rechazada: La posición izquierda de 'FISEI' ya está ocupada por 'SOFTWARE'.
+nodos tras el intento: 9 (sin cambios: true)
+[Caso 5] Grado de FISEI y SOFTWARE
+grado(FISEI): 2 (esperado 2)
+grado(SOFTWARE): 2 (esperado 2)
+
+========== ORGANIZACIÓN DE DEPARTAMENTOS ==========
+1. Crear el árbol inicial
+2. Visualizar el árbol
+3. Consultar el número de nodos
+4. Consultar el número de hojas
+5. Consultar la altura
+6. Consultar el grado de un nodo
+7. Verificar si un nodo es hoja
+8. Salir
+9. Ejecutar casos de prueba obligatorios
+Seleccione una opción: Saliendo del programa. ¡Hasta pronto!
+

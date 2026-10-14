@@ -1,0 +1,6 @@
+[Caso 1] Árbol vacío: esVacio=true; nodos=0; altura=-1
+[Caso 2] Un nodo: nodos=1; hojas=1; altura=0
+[Caso 3] Árbol inicial: nodos=9; hojas=5; altura=3
+[Caso 4] Inserción ocupada: rechazada; nodos=9 sin cambios
+[Caso 5] Grado: FISEI=2; SOFTWARE=2
+Todas las pruebas pasaron correctamente.
