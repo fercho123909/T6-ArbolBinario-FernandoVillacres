@@ -8,6 +8,8 @@ from reportlab.lib.enums import TA_CENTER
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
 from reportlab.lib.units import mm
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.platypus import (
     Image,
     PageBreak,
@@ -24,6 +26,7 @@ EVIDENCE_DIR = Path(__file__).resolve().parent
 PROJECT_DIR = EVIDENCE_DIR.parent
 REPORT_PATH = EVIDENCE_DIR / "Informe.pdf"
 TEST_IMAGE_PATH = EVIDENCE_DIR / "salida_casos.png"
+LOGO_PATH = EVIDENCE_DIR / "logo_uta.png"
 REPOSITORY_URL = "https://github.com/fercho123909/T6-ArbolBinario-FernandoVillacres"
 TEST_OUTPUT_PATH = EVIDENCE_DIR / "salida_casos.txt"
 SOURCE_FILES = [
@@ -34,12 +37,34 @@ SOURCE_FILES = [
 ]
 
 
+def register_report_fonts():
+    regular_path = Path(r"C:\Windows\Fonts\times.ttf")
+    bold_path = Path(r"C:\Windows\Fonts\timesbd.ttf")
+    if regular_path.exists() and bold_path.exists():
+        pdfmetrics.registerFont(TTFont("ReportSerif", str(regular_path)))
+        pdfmetrics.registerFont(TTFont("ReportSerif-Bold", str(bold_path)))
+        return "ReportSerif", "ReportSerif-Bold"
+    return "Times-Roman", "Times-Bold"
+
+
 def add_page_number(canvas, document):
     canvas.saveState()
-    canvas.setFont("Helvetica", 8)
-    canvas.setFillColor(colors.HexColor("#52616B"))
-    canvas.drawString(20 * mm, 12 * mm, "Estructura de Datos - T6 Árbol binario")
-    canvas.drawRightString(190 * mm, 12 * mm, f"Página {document.page}")
+    page_width, page_height = A4
+    canvas.setFillColor(colors.black)
+    canvas.setFont("ReportSerif-Bold", 7.5)
+    canvas.drawCentredString(page_width / 2, page_height - 8 * mm, "UNIVERSIDAD TÉCNICA DE AMBATO")
+    canvas.setFont("ReportSerif", 7)
+    canvas.drawCentredString(
+        page_width / 2,
+        page_height - 12 * mm,
+        "FACULTAD DE INGENIERÍA EN SISTEMAS, ELECTRÓNICA E INDUSTRIAL",
+    )
+    canvas.drawCentredString(page_width / 2, page_height - 16 * mm, "CARRERA DE SOFTWARE")
+    canvas.drawCentredString(page_width / 2, page_height - 20 * mm, "CICLO ACADÉMICO: JULIO - DICIEMBRE 2026")
+    canvas.setLineWidth(0.55)
+    canvas.line(20 * mm, page_height - 23 * mm, page_width - 20 * mm, page_height - 23 * mm)
+    canvas.setFont("ReportSerif", 8)
+    canvas.drawRightString(page_width - 20 * mm, 11 * mm, f"{document.page}")
     canvas.restoreState()
 
 
@@ -48,14 +73,12 @@ def make_table(rows, widths):
     table.setStyle(
         TableStyle(
             [
-                ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#183B56")),
-                ("TEXTCOLOR", (0, 0), (-1, 0), colors.white),
-                ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
-                ("FONTNAME", (0, 1), (-1, -1), "Helvetica"),
+                ("FONTNAME", (0, 0), (-1, 0), "ReportSerif-Bold"),
+                ("FONTNAME", (0, 1), (-1, -1), "ReportSerif"),
                 ("FONTSIZE", (0, 0), (-1, -1), 8),
-                ("LEADING", (0, 0), (-1, -1), 10),
-                ("GRID", (0, 0), (-1, -1), 0.4, colors.HexColor("#AAB7C4")),
-                ("ROWBACKGROUNDS", (0, 1), (-1, -1), [colors.white, colors.HexColor("#EFF5F6")]),
+                ("LEADING", (0, 0), (-1, -1), 9),
+                ("GRID", (0, 0), (-1, -1), 0.45, colors.black),
+                ("BACKGROUND", (0, 0), (-1, -1), colors.white),
                 ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
                 ("TOPPADDING", (0, 0), (-1, -1), 5),
                 ("BOTTOMPADDING", (0, 0), (-1, -1), 5),
@@ -90,15 +113,16 @@ def render_test_transcript():
 
 def build_report():
     has_test_image = render_test_transcript()
+    regular_font, bold_font = register_report_fonts()
     styles = getSampleStyleSheet()
     styles.add(
         ParagraphStyle(
             name="ReportTitle",
             parent=styles["Title"],
-            fontName="Helvetica-Bold",
-            fontSize=21,
-            leading=26,
-            textColor=colors.HexColor("#183B56"),
+            fontName=bold_font,
+            fontSize=15,
+            leading=18,
+            textColor=colors.black,
             alignment=TA_CENTER,
             spaceAfter=5 * mm,
         )
@@ -107,10 +131,10 @@ def build_report():
         ParagraphStyle(
             name="Section",
             parent=styles["Heading2"],
-            fontName="Helvetica-Bold",
-            fontSize=13,
-            leading=16,
-            textColor=colors.HexColor("#087E8B"),
+            fontName=bold_font,
+            fontSize=11,
+            leading=13,
+            textColor=colors.black,
             spaceBefore=3 * mm,
             spaceAfter=2 * mm,
         )
@@ -119,10 +143,22 @@ def build_report():
         ParagraphStyle(
             name="BodySpanish",
             parent=styles["BodyText"],
-            fontName="Helvetica",
+            fontName=regular_font,
             fontSize=9,
-            leading=12,
+            leading=11,
             spaceAfter=2 * mm,
+        )
+    )
+    styles.add(
+        ParagraphStyle(
+            name="CoverTitle",
+            parent=styles["Heading3"],
+            fontName=bold_font,
+            fontSize=12,
+            leading=15,
+            alignment=TA_CENTER,
+            textColor=colors.black,
+            spaceAfter=3 * mm,
         )
     )
     styles.add(
@@ -149,22 +185,21 @@ def build_report():
         pagesize=A4,
         rightMargin=20 * mm,
         leftMargin=20 * mm,
-        topMargin=17 * mm,
+        topMargin=29 * mm,
         bottomMargin=19 * mm,
         title="Informe de guía práctica: Implementación de un árbol binario",
         author="Villacres Lopez Walter Fernando",
     )
 
     story = [
-        Paragraph("UNIVERSIDAD TÉCNICA DE AMBATO", styles["Heading2"]),
-        Paragraph("Facultad de Ingeniería en Sistemas, Electrónica e Industrial", styles["BodySpanish"]),
-        Paragraph("Carrera de Software · Ciclo académico julio-diciembre 2026", styles["BodySpanish"]),
-        Spacer(1, 9 * mm),
+        Spacer(1, 2 * mm),
+        Image(str(LOGO_PATH), width=72 * mm, height=27.2 * mm, kind="proportional", hAlign="CENTER"),
         Paragraph("INFORME DE GUÍA PRÁCTICA", styles["ReportTitle"]),
         Paragraph(
             "T6. Implementación de un árbol binario en Java - Sistema de organización jerárquica de departamentos universitarios",
-            styles["Heading3"],
+            styles["CoverTitle"],
         ),
+        Paragraph("I. PORTADA", styles["Section"]),
         Spacer(1, 4 * mm),
         make_table(
             [
@@ -179,17 +214,19 @@ def build_report():
             ],
             [45 * mm, 125 * mm],
         ),
-        Paragraph("Objetivo", styles["Section"]),
+        Paragraph("II. INFORME DE GUÍA PRÁCTICA", styles["Section"]),
+        Paragraph("2.1 Objetivos", styles["Section"]),
+        Paragraph("General", styles["BodySpanish"]),
         Paragraph(
             "Implementé un árbol binario con programación orientada a objetos para insertar, consultar y analizar la jerarquía de dependencias universitarias.",
             styles["BodySpanish"],
         ),
-        Paragraph("Recursos y actividades", styles["Section"]),
+        Paragraph("2.2 Modalidad, recursos y actividades", styles["Section"]),
         Paragraph(
             "Usé Java (JDK), Visual Studio Code, Git, GitHub, plataformas y aplicaciones educativas. La inteligencia artificial se empleó como apoyo. Implementé Nodo<T>, las operaciones recursivas, el menú y los cinco casos obligatorios. La práctica fue individual.",
             styles["BodySpanish"],
         ),
-        Paragraph("Árbol inicial", styles["Section"]),
+        Paragraph("2.3 Árbol inicial", styles["Section"]),
         Preformatted(
             "UNIVERSIDAD\n"
             "|-- [I] FISEI\n"
@@ -312,13 +349,13 @@ def build_report():
     )
 
     commits = subprocess.run(
-        ["git", "-C", str(PROJECT_DIR), "log", "--reverse", "--pretty=format:%h %s"],
+        ["git", "-C", str(PROJECT_DIR), "log", "-4", "--reverse", "--pretty=format:%h %s"],
         check=True,
         capture_output=True,
         text=True,
     ).stdout.splitlines()
     commit_rows = [["Commit", "Cambio"]]
-    for commit in commits[:4]:
+    for commit in commits:
         short_hash, message = commit.split(" ", 1)
         commit_rows.append([short_hash, message])
     story.append(make_table(commit_rows, [25 * mm, 145 * mm]))

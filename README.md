@@ -107,6 +107,7 @@ Para mantener el árbol correcto, conviene probar siempre el árbol vacío y el 
 - [Salida de consola completa](evidencias/salida_consola.txt)
 - [Informe para entregar](evidencias/Informe.pdf)
 - [Código que genera el informe](evidencias/generar_informe.py)
+- [Logotipo institucional usado en el informe](evidencias/logo_uta.png)
 
 Para volver a ejecutar los cinco casos uso `evidencias/demo_pruebas.cmd`. El archivo `salida_casos.txt` conserva el resultado completo de la ejecución, y el informe también incluye una vista visual claramente identificada como generada desde esa transcripción.
 
