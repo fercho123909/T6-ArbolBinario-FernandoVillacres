@@ -1,12 +1,21 @@
+package test;
+
 import modelo.Nodo;
 import negocio.ArbolBinario;
 
 public class PruebasArbolBinario {
     public static void main(String[] args) {
         probarArbolVacio();
+        System.out.println("[Caso 1] Árbol vacío: esVacio=true; nodos=0; altura=-1");
         probarUnNodo();
-        probarArbolUniversitario();
-        probarInsercionOcupada();
+        System.out.println("[Caso 2] Un nodo: nodos=1; hojas=1; altura=0");
+        ArbolBinario<String> arbol = construirArbolUniversitario();
+        probarArbolUniversitario(arbol);
+        System.out.println("[Caso 3] Árbol inicial: nodos=9; hojas=5; altura=3");
+        probarInsercionOcupada(arbol);
+        System.out.println("[Caso 4] Inserción ocupada: rechazada; nodos=9 sin cambios");
+        probarGrados(arbol);
+        System.out.println("[Caso 5] Grado: FISEI=2; SOFTWARE=2");
         System.out.println("Todas las pruebas pasaron correctamente.");
     }
 
@@ -29,7 +38,7 @@ public class PruebasArbolBinario {
         verificar(raiz.grado() == 0, "La raíz aislada debe tener grado cero.");
     }
 
-    private static void probarArbolUniversitario() {
+    private static ArbolBinario<String> construirArbolUniversitario() {
         ArbolBinario<String> arbol = new ArbolBinario<>();
         Nodo<String> universidad = arbol.crearRaiz("UNIVERSIDAD");
         Nodo<String> fisei = arbol.agregarIzquierdo(universidad, "FISEI");
@@ -40,28 +49,33 @@ public class PruebasArbolBinario {
         arbol.agregarDerecho(dide, "VINCULACIÓN");
         arbol.agregarIzquierdo(software, "NIVEL1");
         arbol.agregarDerecho(software, "NIVEL3");
+        return arbol;
+    }
 
+    private static void probarArbolUniversitario(ArbolBinario<String> arbol) {
         verificar(arbol.contarNodos() == 9, "El árbol universitario debe tener nueve nodos.");
         verificar(arbol.contarHojas() == 5, "El árbol universitario debe tener cinco hojas.");
         verificar(arbol.altura() == 3, "El árbol universitario debe tener altura tres.");
-        verificar(arbol.buscar("FISEI").grado() == 2, "FISEI debe tener grado dos.");
-        verificar(arbol.buscar("SOFTWARE").grado() == 2, "SOFTWARE debe tener grado dos.");
         verificar(arbol.buscar("NIVEL1").esHoja(), "NIVEL1 debe ser una hoja.");
         verificar(arbol.buscar("NO EXISTE") == null, "Una búsqueda ausente debe devolver null.");
     }
 
-    private static void probarInsercionOcupada() {
-        ArbolBinario<String> arbol = new ArbolBinario<>();
-        Nodo<String> raiz = arbol.crearRaiz("RAIZ");
-        arbol.agregarIzquierdo(raiz, "IZQUIERDO");
+    private static void probarInsercionOcupada(ArbolBinario<String> arbol) {
+        Nodo<String> fisei = arbol.buscar("FISEI");
+        int nodosAntes = arbol.contarNodos();
         boolean rechazada = false;
         try {
-            arbol.agregarIzquierdo(raiz, "DUPLICADO");
+            arbol.agregarIzquierdo(fisei, "DUPLICADO");
         } catch (IllegalStateException e) {
             rechazada = true;
         }
         verificar(rechazada, "Debe rechazarse la inserción en una posición ocupada.");
-        verificar(arbol.contarNodos() == 2, "El intento rechazado no debe modificar el árbol.");
+        verificar(arbol.contarNodos() == nodosAntes, "El intento rechazado no debe modificar el árbol.");
+    }
+
+    private static void probarGrados(ArbolBinario<String> arbol) {
+        verificar(arbol.buscar("FISEI").grado() == 2, "FISEI debe tener grado dos.");
+        verificar(arbol.buscar("SOFTWARE").grado() == 2, "SOFTWARE debe tener grado dos.");
     }
 
     private static void verificar(boolean condicion, String mensaje) {

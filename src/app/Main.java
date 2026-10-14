@@ -18,6 +18,7 @@ public class Main {
                     crearArbolInicial();
                     break;
                 case 2:
+                    System.out.println("=== ESTRUCTURA DEL ÁRBOL ===");
                     arbol.mostrarArbol();
                     break;
                 case 3:
@@ -36,85 +37,110 @@ public class Main {
                     consultarHoja();
                     break;
                 case 8:
+                    System.out.println("Saliendo del programa. ¡Hasta pronto!");
                     continuar = false;
                     break;
+                case 9:
+                    ejecutarCasosDePrueba();
+                    break;
                 default:
-                    System.out.println("Opción no válida. Elija un número del 1 al 8.");
+                    System.out.println("Opción no válida. Elija un número del 1 al 9.");
             }
             System.out.println();
         }
-        System.out.println("Programa finalizado.");
     }
 
     private static void mostrarMenu() {
-        System.out.println("=== Árbol binario de departamentos ===");
-        System.out.println("1. Crear/reiniciar árbol inicial");
-        System.out.println("2. Visualizar árbol");
-        System.out.println("3. Consultar número de nodos");
-        System.out.println("4. Consultar número de hojas");
-        System.out.println("5. Consultar altura");
-        System.out.println("6. Consultar grado de un nodo");
+        System.out.println("========== ORGANIZACIÓN DE DEPARTAMENTOS ==========");
+        System.out.println("1. Crear el árbol inicial");
+        System.out.println("2. Visualizar el árbol");
+        System.out.println("3. Consultar el número de nodos");
+        System.out.println("4. Consultar el número de hojas");
+        System.out.println("5. Consultar la altura");
+        System.out.println("6. Consultar el grado de un nodo");
         System.out.println("7. Verificar si un nodo es hoja");
         System.out.println("8. Salir");
+        System.out.println("9. Ejecutar casos de prueba obligatorios");
     }
 
     private static void crearArbolInicial() {
-        arbol = new ArbolBinario<>();
-        Nodo<String> universidad = arbol.crearRaiz("UNIVERSIDAD");
-        Nodo<String> fisei = arbol.agregarIzquierdo(universidad, "FISEI");
-        Nodo<String> dide = arbol.agregarDerecho(universidad, "DIDE");
-        Nodo<String> software = arbol.agregarIzquierdo(fisei, "SOFTWARE");
-        arbol.agregarDerecho(fisei, "TI");
-        arbol.agregarIzquierdo(dide, "INVEST.");
-        arbol.agregarDerecho(dide, "VINCULACIÓN");
-        arbol.agregarIzquierdo(software, "NIVEL1");
-        arbol.agregarDerecho(software, "NIVEL3");
-
-        System.out.println("Árbol inicial creado.");
-        mostrarCasosDePrueba(fisei);
+        arbol = construirArbolInicial();
+        System.out.println("Árbol inicial creado correctamente.");
     }
 
-    private static void mostrarCasosDePrueba(Nodo<String> fisei) {
+    private static ArbolBinario<String> construirArbolInicial() {
+        ArbolBinario<String> nuevoArbol = new ArbolBinario<>();
+        Nodo<String> universidad = nuevoArbol.crearRaiz("UNIVERSIDAD");
+        Nodo<String> fisei = nuevoArbol.agregarIzquierdo(universidad, "FISEI");
+        Nodo<String> dide = nuevoArbol.agregarDerecho(universidad, "DIDE");
+        Nodo<String> software = nuevoArbol.agregarIzquierdo(fisei, "SOFTWARE");
+        nuevoArbol.agregarDerecho(fisei, "TI");
+        nuevoArbol.agregarIzquierdo(dide, "INVESTIGACIÓN");
+        nuevoArbol.agregarDerecho(dide, "VINCULACIÓN");
+        nuevoArbol.agregarIzquierdo(software, "NIVEL1");
+        nuevoArbol.agregarDerecho(software, "NIVEL3");
+        return nuevoArbol;
+    }
+
+    private static void ejecutarCasosDePrueba() {
+        System.out.println("=== CASOS DE PRUEBA OBLIGATORIOS ===");
+
         ArbolBinario<String> vacio = new ArbolBinario<>();
-        System.out.println("\n-- Casos de prueba obligatorios --");
-        System.out.println("Árbol vacío: " + vacio.contarNodos() + " nodos, altura " + vacio.altura());
+        System.out.println("[Caso 1] Árbol vacío");
+        System.out.println("esVacio(): " + vacio.esVacio());
+        System.out.println("nodos: " + vacio.contarNodos() + " (esperado 0)");
+        System.out.println("altura: " + vacio.altura() + " (esperado -1)");
 
         ArbolBinario<String> unNodo = new ArbolBinario<>();
         unNodo.crearRaiz("PRUEBA");
-        System.out.println("Un nodo: " + unNodo.contarNodos() + " nodo, " + unNodo.contarHojas()
-                + " hoja, altura " + unNodo.altura());
-        System.out.println("Árbol inicial: " + arbol.contarNodos() + " nodos, " + arbol.contarHojas()
-                + " hojas, altura " + arbol.altura());
-        System.out.println("Grado de FISEI: " + fisei.grado());
-        System.out.println("Grado de SOFTWARE: " + arbol.buscar("SOFTWARE").grado());
+        System.out.println("[Caso 2] Árbol con un solo nodo");
+        System.out.println("nodos: " + unNodo.contarNodos() + " (esperado 1)");
+        System.out.println("hojas: " + unNodo.contarHojas() + " (esperado 1)");
+        System.out.println("altura: " + unNodo.altura() + " (esperado 0)");
 
+        ArbolBinario<String> arbolPrueba = construirArbolInicial();
+        System.out.println("[Caso 3] Árbol inicial");
+        arbolPrueba.mostrarArbol();
+        System.out.println("nodos: " + arbolPrueba.contarNodos() + " (esperado 9)");
+        System.out.println("hojas: " + arbolPrueba.contarHojas() + " (esperado 5)");
+        System.out.println("altura: " + arbolPrueba.altura() + " (esperado 3)");
+
+        System.out.println("[Caso 4] Intento de insertar un hijo en una posición ocupada");
+        Nodo<String> fisei = arbolPrueba.buscar("FISEI");
+        int nodosAntes = arbolPrueba.contarNodos();
         try {
-            arbol.agregarIzquierdo(fisei, "NUEVO");
-            System.out.println("ERROR: se permitió insertar en una posición ocupada.");
+            arbolPrueba.agregarIzquierdo(fisei, "NUEVO");
+            System.out.println("ERROR: la inserción debió ser rechazada.");
         } catch (IllegalStateException e) {
-            System.out.println("Inserción en posición ocupada: rechazada correctamente (" + e.getMessage() + ")");
+            System.out.println("Inserción rechazada: " + e.getMessage());
         }
+        System.out.println("nodos tras el intento: " + arbolPrueba.contarNodos() + " (sin cambios: "
+                + (nodosAntes == arbolPrueba.contarNodos()) + ")");
+
+        System.out.println("[Caso 5] Grado de FISEI y SOFTWARE");
+        System.out.println("grado(FISEI): " + fisei.grado() + " (esperado 2)");
+        System.out.println("grado(SOFTWARE): " + arbolPrueba.buscar("SOFTWARE").grado() + " (esperado 2)");
     }
 
     private static void consultarGrado() {
         Nodo<String> nodo = buscarNodoSolicitado();
         if (nodo != null) {
-            System.out.println("Grado de " + nodo.getDato() + ": " + nodo.grado());
+            System.out.println("El grado de '" + nodo.getDato() + "' es: " + nodo.grado());
         }
     }
 
     private static void consultarHoja() {
         Nodo<String> nodo = buscarNodoSolicitado();
         if (nodo != null) {
-            System.out.println(nodo.getDato() + (nodo.esHoja() ? " es una hoja." : " no es una hoja."));
+            System.out.println("'" + nodo.getDato() + "' " + (nodo.esHoja() ? "SÍ" : "NO") + " es una hoja.");
         }
     }
 
     private static Nodo<String> buscarNodoSolicitado() {
-        String nombre = leerTexto("Nombre exacto del departamento: ");
+        String nombre = leerTexto("Ingrese el nombre del nodo: ");
         Nodo<String> nodo = arbol.buscar(nombre);
         if (nodo == null) {
-            System.out.println("No se encontró el nodo \"" + nombre + "\".");
+            System.out.println("No existe un nodo llamado '" + nombre + "'.");
         }
         return nodo;
     }

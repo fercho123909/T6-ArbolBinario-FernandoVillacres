@@ -47,4 +47,9 @@ public class Nodo<T> {
         }
         return cantidadHijos;
     }
+
+    @Override
+    public String toString() {
+        return String.valueOf(dato);
+    }
 }

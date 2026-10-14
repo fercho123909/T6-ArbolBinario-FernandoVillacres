@@ -8,7 +8,7 @@ public class ArbolBinario<T> {
 
     public Nodo<T> crearRaiz(T dato) {
         if (raiz != null) {
-            throw new IllegalStateException("El árbol ya tiene una raíz.");
+            throw new IllegalStateException("El árbol ya tiene una raíz: " + raiz.getDato());
         }
         raiz = new Nodo<>(dato);
         return raiz;
@@ -17,7 +17,8 @@ public class ArbolBinario<T> {
     public Nodo<T> agregarIzquierdo(Nodo<T> padre, T dato) {
         validarPadre(padre);
         if (padre.getIzquierdo() != null) {
-            throw new IllegalStateException("La posición del hijo izquierdo ya está ocupada.");
+            throw new IllegalStateException("La posición izquierda de '" + padre.getDato()
+                    + "' ya está ocupada por '" + padre.getIzquierdo().getDato() + "'.");
         }
         Nodo<T> hijo = new Nodo<>(dato);
         padre.setIzquierdo(hijo);
@@ -27,7 +28,8 @@ public class ArbolBinario<T> {
     public Nodo<T> agregarDerecho(Nodo<T> padre, T dato) {
         validarPadre(padre);
         if (padre.getDerecho() != null) {
-            throw new IllegalStateException("La posición del hijo derecho ya está ocupada.");
+            throw new IllegalStateException("La posición derecha de '" + padre.getDato()
+                    + "' ya está ocupada por '" + padre.getDerecho().getDato() + "'.");
         }
         Nodo<T> hijo = new Nodo<>(dato);
         padre.setDerecho(hijo);
@@ -95,32 +97,32 @@ public class ArbolBinario<T> {
 
     public void mostrarArbol() {
         if (raiz == null) {
-            System.out.println("Árbol vacío.");
+            System.out.println("(árbol vacío)");
             return;
         }
         System.out.println(raiz.getDato());
         if (raiz.getIzquierdo() != null) {
-            mostrarRama(raiz.getIzquierdo(), "", raiz.getDerecho() == null);
+            mostrarRama(raiz.getIzquierdo(), "", raiz.getDerecho() == null, "I");
         }
         if (raiz.getDerecho() != null) {
-            mostrarRama(raiz.getDerecho(), "", true);
+            mostrarRama(raiz.getDerecho(), "", true, "D");
         }
     }
 
-    private void mostrarRama(Nodo<T> nodo, String prefijo, boolean esUltimo) {
-        System.out.println(prefijo + (esUltimo ? "\\-- " : "|-- ") + nodo.getDato());
+    private void mostrarRama(Nodo<T> nodo, String prefijo, boolean esUltimo, String lado) {
+        System.out.println(prefijo + (esUltimo ? "`-- " : "|-- ") + "[" + lado + "] " + nodo.getDato());
         String prefijoHijos = prefijo + (esUltimo ? "    " : "|   ");
         if (nodo.getIzquierdo() != null) {
-            mostrarRama(nodo.getIzquierdo(), prefijoHijos, nodo.getDerecho() == null);
+            mostrarRama(nodo.getIzquierdo(), prefijoHijos, nodo.getDerecho() == null, "I");
         }
         if (nodo.getDerecho() != null) {
-            mostrarRama(nodo.getDerecho(), prefijoHijos, true);
+            mostrarRama(nodo.getDerecho(), prefijoHijos, true, "D");
         }
     }
 
     private void validarPadre(Nodo<T> padre) {
         if (padre == null) {
-            throw new IllegalArgumentException("El nodo padre no puede ser null.");
+            throw new IllegalArgumentException("El nodo padre no puede ser nulo.");
         }
     }
 }
