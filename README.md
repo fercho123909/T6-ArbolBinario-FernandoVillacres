@@ -46,6 +46,17 @@ java -cp out app.Main
 
 En el menú, seleccione `1` para crear el árbol inicial. Esta opción también muestra los casos de prueba obligatorios. Después puede visualizarlo y consultar sus datos; para buscar un nodo, escriba su nombre exactamente como aparece en el árbol.
 
+## Ejecutar pruebas automatizadas
+
+Desde la carpeta raíz, compile las clases de negocio y el ejecutor de pruebas, y luego ejecútelo:
+
+```powershell
+javac -encoding UTF-8 -d out src/modelo/Nodo.java src/negocio/ArbolBinario.java test/PruebasArbolBinario.java
+java -cp out PruebasArbolBinario
+```
+
+La prueba valida el árbol vacío, un árbol unitario, los conteos del árbol universitario, las consultas de grado y hoja, las búsquedas ausentes y el rechazo de una inserción duplicada.
+
 ## Resultados esperados
 
 - Árbol vacío: 0 nodos y altura -1.
